@@ -57,7 +57,11 @@ class CollectCompanyCommand extends Command
             $ret = $elem->find('span[itemprop=name]', 0);
 
             // company name
-            if(isset($ret)){
+            if(!isset($ret)){
+                Log::info(date("Ymd") . " addCnt = " . $cnt);
+                exit(0);
+
+            }else{
               $link = "http://ca.indeed.com" . $elem->find('a[rel=nofollow]', 0)->href;
               $company = Company::where('Link', $link)->get();
 

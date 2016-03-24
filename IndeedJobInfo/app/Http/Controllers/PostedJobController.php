@@ -18,14 +18,18 @@ class PostedJobController extends Controller
     $cnt = 0;
 
     // min = 0, max = 990
-    for($i = 0; $i < 30; $i += 10){
+    for($i = 0; $i < 1000; $i += 10){
       $html = file_get_html('http://ca.indeed.com/jobs?q=php&sort=date&start=' . $i);
 
       foreach ($html->find('div[class=row  result]') as $elem) {
         $ret = $elem->find('span[itemprop=name]', 0);
 
         // company name
-        if(isset($ret)){
+        if(!isset($ret)){
+          Log::info(date("Ymd") . " addCnt = " . $cnt);
+          exit(0);
+
+        }else{
           $link = "http://ca.indeed.com" . $elem->find('a[rel=nofollow]', 0)->href;
           $company = Company::where('Link', $link)->get();
 

@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         // Commands\Inspire::class,
+        Commands\CollectCompanyCommand::class
     ];
 
     /**
@@ -28,7 +29,7 @@ class Kernel extends ConsoleKernel
         //          ->hourly();
 
         $schedule->command('collectCompany')
-                ->dailyAt('02:40');
+                ->dailyAt('03:00');
 
         // daily() means executing at 0AM
     }
