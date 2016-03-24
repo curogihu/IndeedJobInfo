@@ -26,5 +26,10 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+
+        $schedule->command('collectCompany')
+                ->dailyAt('02:40');
+
+        // daily() means executing at 0AM
     }
 }

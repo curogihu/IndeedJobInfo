@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Log;
 use App\Http\Requests;
 use App\Company;
 use simple_html_dom;
@@ -17,7 +18,7 @@ class PostedJobController extends Controller
     $cnt = 0;
 
     // min = 0, max = 990
-    for($i = 0; $i < 990; $i += 10){
+    for($i = 0; $i < 30; $i += 10){
       $html = file_get_html('http://ca.indeed.com/jobs?q=php&sort=date&start=' . $i);
 
       foreach ($html->find('div[class=row  result]') as $elem) {
@@ -52,7 +53,8 @@ class PostedJobController extends Controller
       sleep(3);
     }
 
-    echo "Add cnt = " . $cnt;
+    //echo "Add cnt = " . $cnt;
+    Log::info(date("Ymd") . " addCnt = " . $cnt);
   }
 
   public function getCityName($pArr){
