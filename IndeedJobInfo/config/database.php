@@ -52,6 +52,7 @@ return [
             'prefix'   => '',
         ],
 
+/*
         'mysql' => [
             'driver'    => 'mysql',
             'host'      => env('DB_HOST', 'localhost'),
@@ -62,7 +63,21 @@ return [
             'collation' => 'utf8_unicode_ci',
             'prefix'    => '',
             'strict'    => false,
-            'engine'    => null,
+        ],
+*/
+
+        'mysql' => [
+            'driver'        => 'mysql',
+            'host'          => 'localhost',
+            'port'          => '3306',
+            'database'      => 'IndeedInfo',
+            'unix_socket'   => '/Applications/MAMP/tmp/mysql/mysql.sock',
+            'username'      => 'root',
+            'password'      => 'root',
+            'charset'       => 'utf8',
+            'collation'     => 'utf8_unicode_ci',
+            'prefix'        => '',
+            'strict'        => false,
         ],
 
         'pgsql' => [
