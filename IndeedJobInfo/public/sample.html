@@ -1,0 +1,99 @@
+ステップ１）配列データをオフセットと表示個数を指定して表示
+　
+<form class="form-inline">
+  <input ng-model="i_offset" type="text" placeholder="オフセット">
+  <input ng-model="i_size" type="text" placeholder="表示個数">
+</form>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>№</th><th>名前</th><th>年齢</th><th>住所</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="item in friends | offset: i_offset | limitTo: i_size">
+      <td>{{item.id}}</td>
+      <td>{{item.name}}</td>
+      <td>{{item.age}}</td>
+      <td>{{item.address}}</td>
+    </tr>
+  </tbody>
+</table>
+  <br />
+ステップ２）配列データをページングで表示<br />
+　
+<form class="form-inline">
+  <div class="form-group">
+    <label>１ページの件数:</label>
+    <input ng-model="itemsPerPage" type="text">
+  </div>
+</form>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>№</th><th>名前</th><th>年齢</th><th>住所</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="item in friends | offset: (currentPage-1)*itemsPerPage | limitTo: itemsPerPage">
+      <td>{{item.id}}</td>
+      <td>{{item.name}}</td>
+      <td>{{item.age}}</td>
+      <td>{{item.address}}</td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <td colspan="4">
+      <ul class="pagination">
+        <li>
+          <a href="#" ng-click="prevPage()">≪ 前へ</a>
+        </li>
+        <li ng-repeat="n in range()" ng-click="setPage(n)">
+          <a href="#">{{n}}</a>
+        </li>
+        <li>
+          <a href="#" ng-click="nextPage()">次へ ≫</a>
+        </li>
+      </ul>
+    </td>
+  </tfoot>
+</table>
+  <br />
+ステップ３）ページリンクのCSS設定<br />
+　
+<form class="form-inline">
+  <div class="form-group">
+    <label>１ページの件数:</label>
+    <input ng-model="itemsPerPage" type="text">
+  </div>
+</form>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>№</th><th>名前</th><th>年齢</th><th>住所</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="item in friends | offset: (currentPage-1)*itemsPerPage | limitTo: itemsPerPage">
+      <td>{{item.id}}</td>
+      <td>{{item.name}}</td>
+      <td>{{item.age}}</td>
+      <td>{{item.address}}</td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <td colspan="4">
+      <ul class="pagination">
+        <li ng-class="prevPageDisabled()">
+          <a href="#" ng-click="prevPage()">≪ 前へ</a>
+        </li>
+        <li ng-repeat="n in range()"  ng-class="{active: n == currentPage}" ng-click="setPage(n)">
+          <a href="#">{{n}}</a>
+        </li>
+        <li ng-class="nextPageDisabled()">
+          <a href="#" ng-click="nextPage()">次へ ≫</a>
+        </li>
+      </ul>
+    </td>
+  </tfoot>
+</table>

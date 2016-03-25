@@ -16,25 +16,50 @@ class PostedJobController extends Controller
     //America/Vancouver
     date_default_timezone_set('America/Vancouver');
     $cnt = 0;
-    $keyWords = array("php", "wordpress", "scala", "back end", "front end", "full stack");
+    $keyWords = array("php", "scala", "back end", "front end", "full stack");
 
     // min = 0, max = 990
     foreach($keyWords as $keyWord){
       for($i = 0; $i < 1000; $i += 10){
-        $html = file_get_html('http://ca.indeed.com/jobs?q=' .
-                              $this->modifySearchKeyWord($keyWord) .
-                              '&sort=date&start=' . $i);
-        $this->extractCompanyInfo($html);
+        try{
+          sleep(3);
+          $url = 'http://ca.indeed.com/jobs?q=' .
+                                $this->modifySearchKeyWord($keyWord) .
+                                '&sort=date&start=' . $i;
+          $html = file_get_html($url);
+          $this->extractCompanyInfo($html, $keyWord, $cnt);
+          Log::info("success url = " . $url);
 
-        sleep(3);
+          if($this->isEndOfSearchList($html)){
+            break;
+          }
+
+        }catch (Exception $e){
+          Log::error("error url = " . $url);
+          continue;
+        }
       }
+
+      Log::info(date("Ymd") . " keywWrd = " . $keyWord . ", addCnt = " . $cnt);
     }
 
-    //echo "Add cnt = " . $cnt;
     Log::info(date("Ymd") . " addCnt = " . $cnt);
   }
 
-  public function extractCompanyInfo($pHtml){
+  public function isEndOfSearchList($pHtml){
+    $ret = $pHtml->find('span[class=np]');
+
+    foreach($ret as $text){
+      if(strpos($text, 'Next') !== false){
+        return false;
+      }
+    }
+
+    return true;
+
+  }
+
+  public function extractCompanyInfo($pHtml, $pKeyWord, $pCnt){
     foreach ($pHtml->find('div[class=row  result]') as $elem) {
       $ret = $elem->find('span[itemprop=name]', 0);
 
@@ -47,7 +72,10 @@ class PostedJobController extends Controller
         $company = Company::where('Link', $link)->get();
 
         // prevent from inputting duplicate record
-        if($company->isEmpty()){
+        if(!$company->isEmpty()){
+          return $pCnt;
+
+        }else{
           $regionName = $elem->find('span[itemprop=addressLocality]', 0)->plaintext;
           $regionArr = explode(',', str_replace(" ", "", $regionName));
 
@@ -56,16 +84,19 @@ class PostedJobController extends Controller
           $company->CompanyName = trim($elem->find('span[itemprop=name]', 0)->plaintext);
           $company->City = $this->getCityName($regionArr);
           $company->Province = $this->getProvinceName($regionArr);
+          $company->keyWord = $pKeyWord;
           $company->JobTitle = $elem->find('a[rel=nofollow]', 0)->title;
           $company->Link = "http://ca.indeed.com" . $elem->find('a[rel=nofollow]', 0)->href;
 
           $company->AddedTime = date("Ymd");
 
           $company->save();
-          $cnt++;
+          $pCnt++;
         }
       }
     }
+
+    return $pCnt;
   }
 
   public function modifySearchKeyWord($pKeyWord){
