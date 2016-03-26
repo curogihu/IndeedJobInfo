@@ -5,12 +5,34 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use Log;
+use DB;
 use App\Http\Requests;
 use App\Company;
 use simple_html_dom;
 
+use Response;
+
 class PostedJobController extends Controller
 {
+
+  public function index(){
+/*
+    $companies = DB::table('Company')
+                ->select('CompanyName',
+                          'City',
+                          'Province',
+                          'KeyWord',
+                          'JobTitle',
+                          'Link')
+                ->orderBy('CompanyId', 'desc')
+                ->get();
+*/
+    $companies = Company::all()
+                        ->orderBy('CompanyId', 'desc');
+
+    //echo var_dump(json_encode($companies));
+    echo Response::json($companies);
+  }
 
   public function extract(){
     //America/Vancouver

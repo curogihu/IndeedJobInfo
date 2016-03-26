@@ -18,6 +18,7 @@ Route::get('/', function () {
 */
 
 Route::get('/', 'PostedJobController@extract');
+Route::get('/json', 'PostedJobController@index');
 
 
 /*
