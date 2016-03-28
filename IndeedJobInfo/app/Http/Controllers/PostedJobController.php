@@ -16,22 +16,12 @@ class PostedJobController extends Controller
 {
 
   public function index(){
-/*
-    $companies = DB::table('Company')
-                ->select('CompanyName',
-                          'City',
-                          'Province',
-                          'KeyWord',
-                          'JobTitle',
-                          'Link')
-                ->orderBy('CompanyId', 'desc')
-                ->get();
-*/
-    $companies = Company::all()
-                        ->orderBy('CompanyId', 'desc');
+    //$companies = Company::all()
+    return Response::json(Company::all());
+  }
 
-    //echo var_dump(json_encode($companies));
-    echo Response::json($companies);
+  public function search(){
+    return view('search');
   }
 
   public function extract(){
@@ -42,7 +32,7 @@ class PostedJobController extends Controller
 
     // min = 0, max = 990
     foreach($keyWords as $keyWord){
-      for($i = 0; $i < 1000; $i += 10){
+      for($i = 0; $i < 100; $i += 10){
         try{
           sleep(3);
           $url = 'http://ca.indeed.com/jobs?q=' .
