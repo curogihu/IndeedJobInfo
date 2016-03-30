@@ -17,31 +17,19 @@
     <div id="searchForm">
       <form action="post" style="margin-bottom:30px;">
         <label for="name">Company Name</label>
-        <input type="text" name="companyName" size="10" maxlength="10" style="width:155px"><br>
+        <input ng-model="keyword" placeholder="keyword" type="text" name="companyName" size="10" maxlength="10" style="width:155px"><br>
 
         <label for="name">City</label>
-        <select name="city" id="city" style="width:155px">
-          <option value=""></option>
-          <option value=""></option>
-          <option value=""></option>
-        </select><br>
+        <input type="text" name="city" size="10" maxlength="10" style="width:155px"><br>
 
         <label for="name">Province</label>
-        <select name="province" id="province" style="width:155px">
-          <option value=""></option>
-          <option value=""></option>
-          <option value=""></option>
-        </select><br>
+        <input type="text" name="province" size="10" maxlength="10" style="width:155px"><br>
 
         <label for="name">KeyWord</label>
-        <select name="keyword" id="keyword" style="width:155px">
-          <option value=""></option>
-          <option value=""></option>
-          <option value=""></option>
-        </select><br>
+        <input type="text" name="keyword" size="10" maxlength="10" style="width:155px"><br>
 
         <label for="name">Job Title</label>
-        <input type="text" name="jobTitle" size="10" maxlength="10">
+        <input type="text" name="jobTitle" size="10" maxlength="10" style="width:155px">
       </form>
       <br>
     </div>
@@ -49,7 +37,7 @@
     <div id="resultTable" align="center">
       <h3>Search Result</h3>
 
-      <div ng-repeat="company in data | orderBy:'-CompanyId'">
+      <div ng-repeat="company in data | filter:keyword | orderBy:'-CompanyId'">
         <table border="1" style="margin-bottom:10px; width:300px;">
           <tr>
             <td colspan="3" class="col-xs-12"><% company.CompanyName %></td>
