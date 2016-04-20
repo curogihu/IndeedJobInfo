@@ -1,2 +1,2 @@
 # IndeedJobInfo
-Web scrape information in a site, "Indeed" and search companies which post same things repeatedly
+Web scrape information in a site, "Indeed" and collect company information in Canada.
